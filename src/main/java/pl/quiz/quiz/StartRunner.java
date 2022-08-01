@@ -72,6 +72,6 @@ public class StartRunner implements CommandLineRunner {
 //      log.info("Player from DB: " + playerFromDB);
 //    }
     quizDataService.getQuizCategories();
-    quizDataService.getQuizQuestions();
+//    quizDataService.getQuizQuestions();
   }
 }
