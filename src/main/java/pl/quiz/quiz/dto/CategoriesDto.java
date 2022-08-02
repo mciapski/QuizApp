@@ -31,7 +31,7 @@ public class CategoriesDto {
 
   @NoArgsConstructor
   @Data
-  private static class CategoryDto {
+  public static class CategoryDto {
     private int id;
     private String name;
   }
