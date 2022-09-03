@@ -1,5 +1,6 @@
 package pl.quiz.quiz.frontend;
 
+import lombok.Getter;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import pl.quiz.quiz.services.OngoingGameService;
 import pl.quiz.quiz.services.QuizDataService;
 
 @Log
@@ -15,11 +17,8 @@ public class FrontendController {
   @Autowired
   private QuizDataService quizDataService;
 
-  @GetMapping("/")
-  public String hello(Model model) {
-    model.addAttribute("message", "some message");
-    return "index";
-  }
+  @Autowired
+  private OngoingGameService ongoingGameService;
 
   @GetMapping("/select")
   public String select(Model model) {
@@ -41,9 +40,18 @@ public class FrontendController {
   }
 
   @PostMapping("/select")
-  public String postSelectForm(Model model, @ModelAttribute GameOptions gameOptions){
+  public String postSelectForm(Model model, @ModelAttribute GameOptions gameOptions) {
     log.info("Form submitted with data: " + gameOptions);
-    return "index";
-
+    ongoingGameService.init(gameOptions);
+    return "redirect:game";
+  }
+  @GetMapping("/game")
+  public String game(Model model){
+    model.addAttribute("userAnswer", new UserAnswer());
+    model.addAttribute("currentQuestionIndex", ongoingGameService.getCurrentQuestionIndex());
+    model.addAttribute("totalQuestionNumber", ongoingGameService.getTotalQuestionNumber());
+    model.addAttribute("currentQuestion", ongoingGameService.getCurrentQuestion());
+    model.addAttribute("currentQuestionAnswers", ongoingGameService.getCurrentQuestionAnswersInRandomOrder());
+    return "game";
   }
 }

@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 /*
+Jak najczęściej robic injection za pomoca konstruktora i żeby było private final
 Klasa OngoingGameService przechowuje bieżący stan gry na podstawie zdefiniowanego wcześniej przez gracza GameOption
 Zadania:
 Numer biężacego pytania
@@ -45,14 +46,16 @@ public class OngoingGameService {
     this.currentQuestionIndex =0;
     this.points = 0;
 
-    quizDataService.getQuizQuestions(gameOptions);
+    this.questions=quizDataService.getQuizQuestions(gameOptions);
   }
 
   public int getCurrentQuestionIndex(){
+
     return currentQuestionIndex + 1;
   }
 
   public int getTotalQuestionNumber(){
+
     return questions.size();
   }
 
