@@ -6,12 +6,10 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.quiz.quiz.dto.QuestionsDto;
+import pl.quiz.quiz.frontend.Difficulty;
 import pl.quiz.quiz.frontend.GameOptions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /*
 Jak najczęściej robic injection za pomoca konstruktora i żeby było private final
@@ -88,4 +86,20 @@ public class OngoingGameService {
     currentQuestionIndex++;
     return currentQuestionIndex<questions.size();
   }
+
+  public Difficulty getDifficulty(){
+    return gameOptions.getDifficulty();
+  }
+
+  public String getCategoryName(){
+    Optional<String> category = quizDataService.getQuizCategories().stream()
+        .filter(categoryDto->categoryDto.getId() == gameOptions.getCategoryId())
+        .map(categoryDto -> categoryDto.getName())
+        .findAny();
+    return category.orElse(null);
+  }
+
+
+
+
 }
